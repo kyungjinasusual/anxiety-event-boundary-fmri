@@ -1,0 +1,85 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual Environment
+venv/
+env/
+ENV/
+.venv
+
+# Jupyter Notebook
+.ipynb_checkpoints
+*.ipynb_checkpoints/
+
+# Data files (large)
+data/raw/**/*.nii
+data/raw/**/*.nii.gz
+data/raw/**/*.dcm
+data/processed/**/*.nii
+data/processed/**/*.nii.gz
+*.hdf5
+*.h5
+
+# Model checkpoints
+models/checkpoints/*.pth
+models/checkpoints/*.pt
+models/checkpoints/*.ckpt
+
+# Results (large files)
+results/**/*.png
+results/**/*.jpg
+results/**/*.pdf
+
+# Temporary files
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.sublime-*
+
+# Logs
+*.log
+logs/
+
+# Environment variables
+.env
+.env.local
+
+# System files
+.Trash/
+desktop.ini
+
+# Keep directory structure
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+!data/derivatives/.gitkeep
+!models/swift/.gitkeep
+!models/baselines/.gitkeep
+!models/checkpoints/.gitkeep
+!results/figures/.gitkeep
+!results/tables/.gitkeep
+!results/statistics/.gitkeep
