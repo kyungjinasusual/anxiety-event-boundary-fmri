@@ -1,0 +1,93 @@
+# Code Monitor Configuration
+
+# Base directory containing repositories
+# Note: 현재 모든 GitHub repos가 /Users/ohkyungjin/에 분산되어 있음
+# 홈 디렉토리 전체를 스캔하거나, 특정 디렉토리만 지정 가능
+base_directory: /Users/ohkyungjin
+
+# Analysis period (in weeks)
+default_weeks: 1
+
+# File categories and extensions
+file_categories:
+  code:
+    - .py      # Python
+    - .sh      # Shell scripts
+    - .bash    # Bash scripts
+    - .js      # JavaScript
+    - .ts      # TypeScript
+    - .jsx     # React
+    - .tsx     # TypeScript React
+    - .java    # Java
+    - .cpp     # C++
+    - .c       # C
+    - .h       # Headers
+    - .hpp     # C++ headers
+    - .go      # Go
+    - .rs      # Rust
+    - .rb      # Ruby
+    - .php     # PHP
+    - .swift   # Swift
+    - .kt      # Kotlin
+    - .scala   # Scala
+    - .r       # R
+    - .R       # R
+    - .m       # MATLAB/Objective-C
+
+  documentation:
+    - .md      # Markdown
+    - .txt     # Text
+    - .rst     # reStructuredText
+    - .adoc    # AsciiDoc
+    - .org     # Org-mode
+    - .tex     # LaTeX
+    - .docx    # Word documents
+
+  configuration:
+    - .yaml    # YAML
+    - .yml     # YAML
+    - .json    # JSON
+    - .toml    # TOML
+    - .ini     # INI
+    - .conf    # Config
+    - .xml     # XML
+    - .env     # Environment
+
+  data:
+    - .csv     # CSV
+    - .tsv     # TSV
+    - .parquet # Parquet
+    - .h5      # HDF5
+    - .hdf5    # HDF5
+    - .npy     # NumPy
+    - .npz     # NumPy compressed
+
+  notebooks:
+    - .ipynb   # Jupyter notebooks
+
+# Exclude patterns (glob patterns)
+exclude_patterns:
+  - "**/node_modules/**"
+  - "**/venv/**"
+  - "**/env/**"
+  - "**/.venv/**"
+  - "**/build/**"
+  - "**/dist/**"
+  - "**/__pycache__/**"
+  - "**/.git/**"
+  - "**/*.pyc"
+  - "**/.DS_Store"
+
+# Report settings
+report:
+  show_empty_repos: false
+  show_file_details: true
+  max_authors_display: 5
+  color_output: true
+
+# Export settings
+export:
+  json_enabled: true
+  csv_enabled: true
+  html_enabled: false
+  default_output_dir: ./code_monitor_reports
