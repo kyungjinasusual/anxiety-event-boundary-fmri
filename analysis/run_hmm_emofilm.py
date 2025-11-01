@@ -24,9 +24,10 @@ import argparse
 from test_hmm_boundary_detection import EventBoundaryHMM, create_visualizations
 
 
-def load_emofilm_data(data_root='/storage/bigdata/Emo-FiLM',
-                       subject_id='sub-001',
-                       session='rest',
+def load_emofilm_data(data_root='/storage/bigdata/Emo-FiLM/brain_data',
+                       subject_id='sub-S01',
+                       session_id='ses-1',
+                       task='Rest',
                        atlas='aal'):
     """
     Load Emo-FiLM fMRI data for a single subject.
@@ -34,11 +35,13 @@ def load_emofilm_data(data_root='/storage/bigdata/Emo-FiLM',
     Parameters
     ----------
     data_root : str
-        Path to Emo-FiLM dataset root directory
+        Path to Emo-FiLM dataset root directory (brain_data folder)
     subject_id : str
-        Subject identifier (e.g., 'sub-001')
-    session : str
-        Session type: 'rest' for resting-state, or specific film name
+        Subject identifier (e.g., 'sub-S01')
+    session_id : str
+        Session identifier (e.g., 'ses-1', 'ses-2', etc.)
+    task : str
+        Task name: 'Rest' for resting-state, or film name ('BigBuckBunny', etc.)
     atlas : str
         Brain atlas for ROI extraction ('aal', 'schaefer', etc.)
 
@@ -49,18 +52,13 @@ def load_emofilm_data(data_root='/storage/bigdata/Emo-FiLM',
     metadata : dict
         Subject and scan metadata
     """
-    print(f"Loading {subject_id}, session: {session}...")
+    print(f"Loading {subject_id}, session: {session_id}, task: {task}...")
 
     data_path = Path(data_root)
 
-    # Construct BIDS path (adjust based on actual Emo-FiLM structure)
-    # Example: /storage/bigdata/Emo-FiLM/sub-001/func/sub-001_task-rest_bold.nii.gz
-    func_dir = data_path / subject_id / 'func'
-
-    if session == 'rest':
-        func_file = func_dir / f'{subject_id}_task-rest_bold.nii.gz'
-    else:
-        func_file = func_dir / f'{subject_id}_task-{session}_bold.nii.gz'
+    # Construct BIDS path: /storage/bigdata/Emo-FiLM/brain_data/sub-S01/ses-1/func/sub-S01_ses-1_task-Rest_bold.nii.gz
+    func_dir = data_path / subject_id / session_id / 'func'
+    func_file = func_dir / f'{subject_id}_{session_id}_task-{task}_bold.nii.gz'
 
     if not func_file.exists():
         raise FileNotFoundError(f"Functional data not found: {func_file}")
@@ -103,7 +101,8 @@ def load_emofilm_data(data_root='/storage/bigdata/Emo-FiLM',
     # Metadata
     metadata = {
         'subject_id': subject_id,
-        'session': session,
+        'session_id': session_id,
+        'task': task,
         'atlas': atlas,
         'n_timepoints': timeseries.shape[0],
         'n_rois': timeseries.shape[1],
@@ -114,7 +113,7 @@ def load_emofilm_data(data_root='/storage/bigdata/Emo-FiLM',
     return timeseries, metadata
 
 
-def load_emofilm_anxiety_scores(data_root='/storage/bigdata/Emo-FiLM'):
+def load_emofilm_anxiety_scores(data_root='/storage/bigdata/Emo-FiLM/brain_data'):
     """
     Load anxiety/trait questionnaire data from Emo-FiLM.
 
@@ -123,7 +122,7 @@ def load_emofilm_anxiety_scores(data_root='/storage/bigdata/Emo-FiLM'):
     Parameters
     ----------
     data_root : str
-        Path to Emo-FiLM dataset root
+        Path to Emo-FiLM brain_data directory
 
     Returns
     -------
@@ -135,32 +134,26 @@ def load_emofilm_anxiety_scores(data_root='/storage/bigdata/Emo-FiLM'):
     # Emo-FiLM BIDS participants.tsv file
     participants_file = Path(data_root) / 'participants.tsv'
 
-    if participants_file.exists():
-        demographics = pd.read_csv(participants_file, sep='\t')
-        print(f"  ✓ Loaded demographics for {len(demographics)} participants")
-    else:
-        print(f"  ⚠ Warning: participants.tsv not found at {participants_file}")
-        print("  Creating placeholder demographics...")
-        # Create placeholder if file doesn't exist
-        demographics = pd.DataFrame({
-            'participant_id': [f'sub-{i+1:03d}' for i in range(30)],
-            'age': np.random.randint(20, 40, 30),
-            'sex': np.random.choice(['M', 'F'], 30),
-        })
+    if not participants_file.exists():
+        raise FileNotFoundError(f"participants.tsv not found at {participants_file}")
 
-    # Check for anxiety-related columns
-    # DASS-21: Depression Anxiety Stress Scale
-    # We'll focus on anxiety subscale if available
-    if 'DASS_anxiety' in demographics.columns:
-        print("  ✓ Found DASS anxiety scores")
-        demographics['anxiety_score'] = demographics['DASS_anxiety']
-    elif 'BIS' in demographics.columns:
+    demographics = pd.read_csv(participants_file, sep='\t')
+    print(f"  ✓ Loaded demographics for {len(demographics)} participants")
+
+    # Rename participant_id to subject_id for consistency
+    if 'participant_id' in demographics.columns:
+        demographics = demographics.rename(columns={'participant_id': 'subject_id'})
+
+    # Check for DASS_anx column (primary anxiety measure in Emo-FiLM)
+    if 'DASS_anx' in demographics.columns:
+        print("  ✓ Found DASS_anx (anxiety subscale) scores")
+        demographics['anxiety_score'] = demographics['DASS_anx']
+    elif 'bis' in demographics.columns:
         # Behavioral Inhibition System (related to anxiety)
-        print("  ✓ Using BIS scores as anxiety proxy")
-        demographics['anxiety_score'] = demographics['BIS']
+        print("  ⚠ Warning: DASS_anx not found, using BIS as anxiety proxy")
+        demographics['anxiety_score'] = demographics['bis']
     else:
-        print("  ⚠ Warning: No anxiety scores found, using placeholder")
-        demographics['anxiety_score'] = np.random.normal(42, 10, len(demographics))
+        raise ValueError("No anxiety-related columns found in participants.tsv")
 
     return demographics
 
@@ -279,14 +272,17 @@ def main():
     """
     parser = argparse.ArgumentParser(description='HMM Event Boundary Detection - Emo-FiLM')
     parser.add_argument('--data_root', type=str,
-                       default='/storage/bigdata/Emo-FiLM',
-                       help='Path to Emo-FiLM dataset')
+                       default='/storage/bigdata/Emo-FiLM/brain_data',
+                       help='Path to Emo-FiLM brain_data directory')
     parser.add_argument('--output_dir', type=str,
                        default='results_emofilm',
                        help='Output directory')
-    parser.add_argument('--session', type=str,
-                       default='rest',
-                       help='Session type (rest or film name)')
+    parser.add_argument('--session_id', type=str,
+                       default='ses-1',
+                       help='Session ID (ses-1, ses-2, ses-3, or ses-4)')
+    parser.add_argument('--task', type=str,
+                       default='Rest',
+                       help='Task name (Rest, BigBuckBunny, etc.)')
     parser.add_argument('--atlas', type=str,
                        default='aal',
                        choices=['aal', 'schaefer'],
@@ -301,7 +297,8 @@ def main():
     print("HMM EVENT BOUNDARY DETECTION - EMO-FILM DATASET")
     print("="*60)
     print(f"Data root: {args.data_root}")
-    print(f"Session: {args.session}")
+    print(f"Session: {args.session_id}")
+    print(f"Task: {args.task}")
     print(f"Atlas: {args.atlas}")
 
     # Create output directory
@@ -311,9 +308,9 @@ def main():
     # Load demographics/anxiety data
     demographics = load_emofilm_anxiety_scores(args.data_root)
 
-    # Get subject list
+    # Get subject list (sub-S01 to sub-S30, excluding missing sub-S12, sub-S18)
     data_root = Path(args.data_root)
-    subject_dirs = sorted([d for d in data_root.glob('sub-*') if d.is_dir()])
+    subject_dirs = sorted([d for d in data_root.glob('sub-S*') if d.is_dir()])
 
     if args.n_subjects is not None:
         subject_dirs = subject_dirs[:args.n_subjects]
@@ -334,7 +331,8 @@ def main():
             timeseries, metadata = load_emofilm_data(
                 data_root=args.data_root,
                 subject_id=subject_id,
-                session=args.session,
+                session_id=args.session_id,
+                task=args.task,
                 atlas=args.atlas
             )
 

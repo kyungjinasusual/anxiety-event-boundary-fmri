@@ -7,9 +7,10 @@ echo "Emo-FiLM HMM Analysis - Quick Test"
 echo "============================================"
 
 # Configuration
-DATA_ROOT="/storage/bigdata/Emo-FiLM"
+DATA_ROOT="/storage/bigdata/Emo-FiLM/brain_data"
 N_TEST_SUBJECTS=5
-SESSION="rest"
+SESSION_ID="ses-1"
+TASK="Rest"
 ATLAS="aal"
 OUTPUT_DIR="../results/quick_test_$(date +%Y%m%d_%H%M%S)"
 
@@ -48,7 +49,8 @@ echo ""
 
 $PYTHON run_hmm_emofilm.py \
     --data_root "$DATA_ROOT" \
-    --session "$SESSION" \
+    --session_id "$SESSION_ID" \
+    --task "$TASK" \
     --atlas "$ATLAS" \
     --n_subjects $N_TEST_SUBJECTS \
     --output_dir "$OUTPUT_DIR"
