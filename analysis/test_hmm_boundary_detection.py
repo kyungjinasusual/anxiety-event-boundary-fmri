@@ -85,7 +85,7 @@ class EventBoundaryHMM:
             for train_idx, test_idx in kf.split(X):
                 model = hmm.GaussianHMM(
                     n_components=n_states,
-                    covariance_type='full',
+                    covariance_type='diag',
                     n_iter=1000,
                     random_state=self.random_state,
                     verbose=False
@@ -103,7 +103,7 @@ class EventBoundaryHMM:
             # BIC (lower is better)
             model_full = hmm.GaussianHMM(
                 n_components=n_states,
-                covariance_type='full',
+                covariance_type='diag',
                 n_iter=1000,
                 random_state=self.random_state,
                 verbose=False
@@ -151,7 +151,7 @@ class EventBoundaryHMM:
 
         self.model = hmm.GaussianHMM(
             n_components=n_states,
-            covariance_type='full',
+            covariance_type='diag',
             n_iter=1000,
             random_state=self.random_state,
             verbose=False
