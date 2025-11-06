@@ -177,11 +177,65 @@ python analysis/interpretation/analyze_attention.py \
 - [ ] Week 9-10: 논문 작성
 - [ ] Week 11-12: 리뷰 및 수정
 
+## 최신 문헌 고찰 (2025-11-06 업데이트)
+
+### 📚 종합 문헌 리뷰
+새로운 선행연구 조사를 통해 다음 문서들이 추가되었습니다:
+
+1. **[anxiety_event_segmentation_research_2025-11-06.md](docs/anxiety_event_segmentation_research_2025-11-06.md)** (34KB)
+   - 신경-행동 사건 경계 분리 증거
+   - HMM 검증 및 활용 근거
+   - 개인차와 불안의 연구 공백
+   - ROI 분석 전략 및 권장사항
+   - 공개 데이터셋 상세 분석
+   - 연구 설계 권고사항
+
+2. **[anxiety_event_segmentation_narrative_summary.md](docs/anxiety_event_segmentation_narrative_summary.md)** (29KB)
+   - 선행연구 종합 (줄글 형식)
+   - 논문 서론/문헌고찰 섹션 활용 가능
+   - 학술적 톤으로 작성
+
+### 핵심 발견사항
+
+#### ✅ 신경-행동 경계 분리 (Baldassano et al., 2017)
+- 신경 사건 경계는 행동 보고보다 **더 빈번하고 세밀함**
+- 35-40% 일치도는 계층적 처리를 반영하는 적절한 수준
+- 초기 감각 영역: 매우 세밀한 경계
+- DMN/고차 영역: 의식적 경계와 더 잘 대응
+
+#### ✅ HMM의 타당성
+- Gold-standard 방법으로 확립
+- StudyForrest, Sherlock 등에서 광범위하게 검증
+- BrainIAK 라이브러리로 구현 가능
+- 개인차 포착에 최적
+
+#### 🔴 연구 공백: 불안과 신경 사건 분할
+- **직접적 연구 전무**: 불안이 신경 사건 분할에 미치는 영향 미조사
+- DMN 변화 + 개인차 연구는 각각 존재하나 통합 연구 없음
+- **높은 novelty와 impact 예상**
+
+#### ⚠️ 새로운 데이터 수집 필요
+- 기존 공개 데이터셋에 특성 불안 측정치 부재
+- Emo-FiLM, StudyForrest, Narratives 등 모두 불안 척도 없음
+- 권장: 3단계 접근 (검증 → 신규 수집 → 확장)
+
 ## 참고문헌
 
-1. SwiFT: Swin 4D fMRI Transformer (https://github.com/athms/swift-fmri)
-2. Event Segmentation Theory
-3. Anxiety and Brain Connectivity Literature
+### 핵심 논문
+1. **Baldassano et al., 2017** (Neuron) - HMM 기반 신경 사건 경계 탐지
+2. **Ben-Yakov & Henson, 2018** (J Neuroscience) - 해마의 사건 경계 반응
+3. **Clewett et al., 2023** (Cerebral Cortex) - 신경 사건 분할의 개인차
+4. **Schaefer et al., 2018** (Cerebral Cortex) - 기능적 parcellation
+
+### 방법론
+- SwiFT: Swin 4D fMRI Transformer (https://github.com/athms/swift-fmri)
+- BrainIAK HMM Tutorial (https://brainiak.org)
+- Event Segmentation Theory (Zacks et al.)
+
+### 이론적 배경
+- Eysenck's Attentional Control Theory
+- Bar-Haim et al. (2007) - Threat-related attentional bias
+- Anxiety and Brain Connectivity Literature
 
 ## 라이선스
 
