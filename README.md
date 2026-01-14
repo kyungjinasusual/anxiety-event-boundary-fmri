@@ -11,13 +11,13 @@
 > "People don't see the world before their eyes until it's put in a narrative mode."
 > — Filmmaker Brian De Palma
 
-인간의 마음은 **서사 생성 엔진(narrative generation engine)**으로서, 연속적인 경험을 이산적인 사건 단위로 분할하여 의미를 구성합니다. 이 연구는 불안이 이러한 사건 분할 과정에 어떤 영향을 미치는지 탐구합니다.
+인간의 마음은 서사 생성 엔진(narrative generation engine)으로서, 연속적인 경험을 이산적인 사건 단위로 분할하여 의미를 구성합니다. 이 연구는 불안이 이러한 사건 분할 과정에 어떤 영향을 미치는지 탐구합니다.
 
 ## 이론적 배경
 
 ### Event Segmentation Theory (EST)
 - 연속적 경험을 이산적, 의미 있는 사건 단위로 자동 분할 (Zacks et al., 2007)
-- **핵심 원리**: 사건 경계는 **예측 오차(prediction error)**가 일시적으로 증가할 때 발생
+- **핵심 원리**: 사건 경계는 예측 오차(prediction error)가 일시적으로 증가할 때 발생
 - GPT-2 Bayesian surprise가 인간 사건 분할과 유의미하게 상관 (r ≈ 0.3-0.4, Kumar et al., 2023)
 
 ### 사건 경계의 계층적 구조
@@ -27,11 +27,11 @@
 | Action | STS | Medium events | Handshakes, car departures |
 | Situation | AG, PMC | Long events | Job interviews, breakups |
 
-고차원 사건 경계에서 **해마 결합(hippocampal binding)** 현상이 관찰되며, 이는 일화 기억 형성과 직결됩니다.
+고차원 사건 경계에서 해마 결합(hippocampal binding) 현상이 관찰되며, 이는 일화 기억 형성과 직결됩니다.
 
 ### Uncertainty and Anticipation Model of Anxiety (UAMA)
 불안은 예측 처리(predictive processing)를 변형시킵니다 (Grupe & Nitschke, 2013):
-- **과잉경계(hypervigilance)**: 뇌의 신호 탐지 민감도 비정상적 증가
+- 과잉경계(hypervigilance): 뇌의 신호 탐지 민감도 비정상적 증가
 - 일반인이 무시할 작은 감각/맥락 변화도 불안한 뇌에서는 예측 오차 유발
 
 ## 연구 가설
